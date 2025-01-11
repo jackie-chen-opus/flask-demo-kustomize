@@ -63,7 +63,7 @@ jobs:
             export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
             curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
             chmod +x /usr/local/bin/argocd
-            echo "https://${ARGOCD_SERVER}/download/argocd-linux-amd64"
+            echo 111
             du -sh /usr/local/bin/argocd
             argocd app sync ${app}
             argocd app wait ${app} --timeout 600
