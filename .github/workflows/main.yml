@@ -37,7 +37,8 @@ jobs:
         if: ${{ github.event.inputs.image }}
         run: |
           app="flask-demo"
-          pwd
+          pwd && ls -l
+          ls ./service-deployment/
 
           sed -i "s|repository:.*|repository: '${{ github.event.inputs.image }}'|" service-deployment/${app}/values.yaml
           sed -i "s|tag:.*|tag: '${{ github.event.inputs.sha-tag }}'|" values.yaml
