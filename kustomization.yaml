@@ -7,4 +7,4 @@ resources:
 - secret.yaml
 images:
 - name: jackiechenopus/flask-demo
-  newTag: c51330e327b45dde7ce737fe4ffcd4b4698818cb
+  newTag: a68b1f14175ba53c2441e4005dc46decead68835
