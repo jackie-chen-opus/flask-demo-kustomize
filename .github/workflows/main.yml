@@ -38,7 +38,7 @@ jobs:
         run: |
           app="flask-demo"
           pwd && ls -l
-          
+
           sed -i "s@repository:.*@repository: '${{ github.event.inputs.image }}'@g" ./service-deployment/${app}/values.yaml
           sed -i "s@tag:.*@tag: '${{ github.event.inputs.sha-tag }}'@g" ./service-deployment/${app}/values.yaml
       
@@ -48,3 +48,22 @@ jobs:
         with:
           message: "kustomize set image to ${{ github.event.inputs.image }}:${{ github.event.inputs.sha-tag }}"
           branch: master
+
+  synchronizing:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - name: sync to Argo CD
+          run: |
+            app="flask-demo"
+            export ARGOCD_SERVER=${{ secrets.ARGOCD_SERVER }}
+            export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
+            curl -sSL -o /usr/local/bin/argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+            argocd app sync ${app}
+            argocd app wait ${app} --timeout 600
+
+
+
