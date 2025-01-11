@@ -36,7 +36,11 @@ jobs:
       - name: kustomize edit
         if: ${{ github.event.inputs.image }}
         run: |
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+          app="flask-demo"
+
+          sed -i "s|repository:.*|repository: '${{ github.event.inputs.image }}'|" service-deployment/${app}/values.yaml
+          sed -i "s|tag:.*|tag: '${{ github.event.inputs.sha-tag }}'|" values.yaml
+
           kustomize edit set image ${{ github.event.inputs.image }}:${{ github.event.inputs.sha-tag }}
           rm -f kustomize
       

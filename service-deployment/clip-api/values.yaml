@@ -1,0 +1,3 @@
+branchName: latest
+env: staging
+imageRepo: us-central1-docker.pkg.dev/opuspro/clip-apps/clip-api

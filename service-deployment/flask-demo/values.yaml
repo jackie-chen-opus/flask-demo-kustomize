@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  repository: jackiechenopus/flask-demo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+labels:
+  version: "v1.0.0"          # 应用版本
+  application: "flask-demo"  # 应用名称
+  branch: master             # Git 分支
+  env: staging               # 运行环境，如 production、staging、development
+
+envVars:                     # 容器内的环境变量
+  - name: APP_ENV
+    value: "staging"         # 应用运行环境变量
+  - name: LOG_LEVEL
+    value: "debug"           # 日志级别
+  - name: FEATURE_FLAG
+    value: "enabled"         # 功能开关
+
+resources:                   # 容器资源配置（可选）
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+  requests:
+    cpu: "250m"
+    memory: "128Mi"

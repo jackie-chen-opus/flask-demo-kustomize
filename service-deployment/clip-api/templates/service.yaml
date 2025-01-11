@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clip-api-{{ .Values.branchName }}
+  labels:
+    app: clip-api
+    environment: {{ .Values.env }}
+    branch: {{ .Values.branchName }}
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: null # 可以省略，让Kubernetes自动分配
+  selector:
+    app: clip-api
+    environment: {{ .Values.env }}
+    branch: {{ .Values.branchName }}

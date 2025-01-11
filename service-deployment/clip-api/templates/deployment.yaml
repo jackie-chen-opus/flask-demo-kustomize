@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clip-api-{{ .Values.branchName }}
+  labels:
+    app: clip-api
+    environment: {{ .Values.env }}
+    branch: {{ .Values.branchName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clip-api
+      environment: {{ .Values.env }}
+      branch: {{ .Values.branchName }}
+  template:
+    metadata:
+      labels:
+        app: clip-api
+        environment: {{ .Values.env }}
+        branch: {{ .Values.branchName }}
+    spec:
+      containers:
+        - name: clip-api
+          image: {{ .Values.imageRepo }}:{{ .Values.branchName }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.env }}
+            - name: DD_ENV
+              value: {{ .Values.env }}
+            - name: API_PORT
+              value: "80"
+            - name: SCHEDULE_TASK_SWITCH
+              value: "true"
+            - name: BRANCH_NAME
+              value: {{ .Values.branchName }}
