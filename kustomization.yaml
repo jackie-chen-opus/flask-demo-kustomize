@@ -6,7 +6,5 @@ resources:
 - service.yaml
 - secret.yaml
 images:
-- name: 364950776/flask-demo
-  newTag: 4e3c18c73f15a59d7ad924682949ca3143025ab7
 - name: jackiechenopus/flask-demo
   newTag: c51330e327b45dde7ce737fe4ffcd4b4698818cb
