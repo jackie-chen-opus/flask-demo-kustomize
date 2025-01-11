@@ -61,7 +61,7 @@ jobs:
             app="flask-demo"
             export ARGOCD_SERVER=${{ secrets.ARGOCD_SERVER }}
             export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
-            curl -sSL -o /usr/local/bin/argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+            curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
             chmod +x /usr/local/bin/argocd
             echo "https://${ARGOCD_SERVER}/download/argocd-linux-amd64"
             du -sh /usr/local/bin/argocd
