@@ -30,7 +30,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.2.2
         if: ${{ github.event.inputs.image }}
       
       - name: kustomize edit
@@ -41,7 +41,7 @@ jobs:
           rm -f kustomize
       
       - name: Git Commit/Push Changes
-        uses: actions-x/commit@v2
+        uses: actions-x/commit@v6
         if: ${{ github.event.inputs.image }}
         with:
           message: "kustomize set image to ${{ github.event.inputs.image }}:${{ github.event.inputs.sha-tag }}"
