@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: 'jackiechenopus/flask-demo'
-  tag: 'b32140a6b74c5b28d8ae1b26da9a2cc82aa069ed'
+  tag: 'ee58bef839855f29df932aa5863566b3d10fa6fc'
   pullPolicy: Always
 
 service:
