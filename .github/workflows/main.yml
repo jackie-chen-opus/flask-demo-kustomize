@@ -20,9 +20,9 @@ on:
         required: true
         description: 'docker image tag'
 
-# permissions:  # 在顶层定义权限
-#   id-token: write  # 启用 OIDC 令牌权限
-#   contents: read   # 允许读取代码内容
+permissions:  # 在顶层定义权限
+  id-token: write  # 启用 OIDC 令牌权限
+  # contents: read   # 允许读取代码内容
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
