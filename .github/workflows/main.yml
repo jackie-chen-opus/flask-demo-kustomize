@@ -82,6 +82,8 @@ jobs:
             # curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
             curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64
             chmod +x /usr/local/bin/argocd
+            argocd login $ARGOCD_SERVER --grpc-web --sso --oidc-token $OIDC_TOKEN
+
             argocd app sync ${app}
             argocd app wait ${app} --timeout 600
 
