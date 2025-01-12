@@ -59,12 +59,11 @@ jobs:
         - name: sync to Argo CD
           run: |
             app="flask-demo"
-            export ARGOCD_SERVER=${{ secrets.ARGOCD_SERVER }}
+            ARGOCD_VERSION=v2.13.2
             export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
-            curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
+            # curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
+            curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64
             chmod +x /usr/local/bin/argocd
-            echo 111
-            du -sh /usr/local/bin/argocd
             argocd app sync ${app}
             argocd app wait ${app} --timeout 600
 
