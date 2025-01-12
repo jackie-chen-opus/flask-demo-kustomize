@@ -20,14 +20,14 @@ on:
         required: true
         description: 'docker image tag'
 
-permissions:  # 在顶层定义权限
-  id-token: write  # 启用 OIDC 令牌权限
-  # contents: read   # 允许读取代码内容
+# permissions:  # 在顶层定义权限
+#   id-token: write  # 启用 OIDC 令牌权限
+#   contents: read   # 允许读取代码内容
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-sync:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -53,38 +53,31 @@ jobs:
           message: "kustomize set image to ${{ github.event.inputs.image }}:${{ github.event.inputs.sha-tag }}"
           branch: master
 
-  synchronizing:
-      # The type of runner that the job will run on
-      runs-on: ubuntu-latest
-
-      # Steps represent a sequence of tasks that will be executed as part of the job
-      steps:
-
-        - name: Generate OIDC Token
-          env:
-            CF_AUD: fad6898b218c4a85ccfbdd414780fc6b284e7bc42f15b09c843d02b326300dc4
-          run: |
-            OIDC_TOKEN=$(curl -X POST \
-              -H "Content-Type: application/json" \
-              -d '{"aud":"'"$CF_AUD"'"}' \
-              $ACTIONS_ID_TOKEN_REQUEST_URL \
-              -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
-            echo "OIDC Token: $OIDC_TOKEN"
+      # - name: Generate OIDC Token
+      #   env:
+      #     CF_AUD: fad6898b218c4a85ccfbdd414780fc6b284e7bc42f15b09c843d02b326300dc4
+      #   run: |
+      #     OIDC_TOKEN=$(curl -X POST \
+      #       -H "Content-Type: application/json" \
+      #       -d '{"aud":"'"$CF_AUD"'"}' \
+      #       $ACTIONS_ID_TOKEN_REQUEST_URL \
+      #       -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
+      #     echo "OIDC Token: $OIDC_TOKEN"
 
 
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        - name: sync to Argo CD
-          run: |
-            app="flask-demo"
-            ARGOCD_VERSION=v2.13.2
-            export ARGOCD_SERVER=${{ secrets.ARGOCD_SERVER }}
-            export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
-            # curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
-            curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64
-            chmod +x /usr/local/bin/argocd
-            argocd login $ARGOCD_SERVER --grpc-web --sso --oidc-token $OIDC_TOKEN
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: sync to Argo CD
+        run: |
+          app="flask-demo"
+          ARGOCD_VERSION=v2.13.2
+          export ARGOCD_SERVER=${{ secrets.ARGOCD_SERVER }}
+          export ARGOCD_AUTH_TOKEN=${{ secrets.ARGOCD_AUTH_TOKEN }}
+          # curl -sSL -o /usr/local/bin/argocd https://stg-cd.eng.opus.pro/download/argocd-linux-amd64
+          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+          # argocd login $ARGOCD_SERVER --grpc-web --sso --oidc-token $OIDC_TOKEN
 
-            argocd app sync ${app}
-            argocd app wait ${app} --timeout 600
+          argocd app sync ${app}
+          argocd app wait ${app} --timeout 600
 
 
